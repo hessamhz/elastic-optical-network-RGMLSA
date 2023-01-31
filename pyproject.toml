@@ -1,0 +1,23 @@
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.env
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
+[tool.isort]
+profile = "black"
+line_length = 79
+multi_line_output = 3
+include_trailing_comma = true
