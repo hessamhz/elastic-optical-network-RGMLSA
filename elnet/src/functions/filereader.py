@@ -7,3 +7,12 @@ def node_reader(filepath: str) -> pd.DataFrame:
     # df["coordinates"] = list(zip(df["latitude"], df["longitude"]))
     # df = df.drop(columns=["latitude", "longitude"])
     return df
+
+
+
+def edges_reader(filepath:str) -> pd.DataFrame:
+    df_edges=pd.read_csv(filepath)
+    
+
+    return df_edges
+
