@@ -1,1 +1,1 @@
-from src.functions.filereader import node_reader
+from src.functions.filereader import edges_reader, node_reader
