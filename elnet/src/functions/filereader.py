@@ -9,10 +9,5 @@ def node_reader(filepath: str) -> pd.DataFrame:
     return df
 
 
-
-def edges_reader(filepath:str) -> pd.DataFrame:
-    df_edges=pd.read_csv(filepath)
-    
-
-    return df_edges
-
+def edges_reader(filepath: str) -> pd.DataFrame:
+    return pd.read_csv(filepath)
