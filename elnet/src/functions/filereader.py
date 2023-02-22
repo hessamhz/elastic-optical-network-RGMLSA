@@ -2,7 +2,7 @@ import pandas as pd
 
 
 def node_reader(filepath: str) -> pd.DataFrame:
-    df = pd.read_csv(filepath)
+    df = pd.read_excel(filepath)
     # Might need to change according to our plot at the end.
     # df["coordinates"] = list(zip(df["latitude"], df["longitude"]))
     # df = df.drop(columns=["latitude", "longitude"])
@@ -11,8 +11,7 @@ def node_reader(filepath: str) -> pd.DataFrame:
 
 
 def edges_reader(filepath:str) -> pd.DataFrame:
-    df_edges=pd.read_csv(filepath)
+    df_edges=pd.read_excel(filepath)
     
-
     return df_edges
 
