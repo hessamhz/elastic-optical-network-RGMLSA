@@ -1,4 +1,4 @@
-data_rate,mod_format,bits_entropy,ch_spacing,reach
+data_rate,mod_format,bits_entropy,ch_spacing,reach,numberofslots
 800,PCS 64 QAM,5.67,100,150,8
 700,PCS 64 QAM,5.00,100,400,8
 600,16 QAM,4.00,100,700,8
