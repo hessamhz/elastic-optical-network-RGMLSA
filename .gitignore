@@ -209,3 +209,6 @@ tags
 .idea/
 
 .pytest_cache/
+
+# sandbox
+sandbox.py
