@@ -1,21 +1,22 @@
-﻿Source;Destination;Weight
-Milano;Bolzano;140
-Milano;Verona;110
-Verona ;Bolzano;110
-Milano;Genova;90
-Pisa;Firenze;60
-Genova;Pisa;120
-Ancona;Bologna;200
-Pescara;Ancona;130
-Roma;Napoli;180
-Napoli;Bari;210
-Bari;Potenza;100
-Potenza;Napoli;90
-Napoli;Pescara;200
-Pescara;Bari;270
-Pisa;Roma;190
-Firenze;Bologna;55
-Bologna ;Verona;95
-Genova;Bologna;130
-Firenze;Genova;150
-Firenze ;Roma;180
+Source,Destination,Weight
+Milano,Bolzano,140
+Bolzano,Milano,140
+Milano,Verona,110
+Bolzano,Verona,110
+Milano,Genova,90
+Pisa,Firenze,60
+Genova,Pisa,120
+Ancona,Bologna,200
+Pescara,Ancona,130
+Roma,Napoli,180
+Napoli,Bari,210
+Bari,Potenza,100
+Potenza,Napoli,90
+Napoli,Pescara,200
+Pescara,Bari,270
+Pisa,Roma,190
+Firenze,Bologna,55
+Verona,Bologna,95
+Genova,Bologna,130
+Firenze,Genova,150
+Roma,Firenze,180
