@@ -1,5 +1,6 @@
 Source,Destination,Weight
 Milano,Bolzano,140
+Bolzano,Milano,140
 Milano,Verona,110
 Bolzano,Verona,110
 Milano,Genova,90
