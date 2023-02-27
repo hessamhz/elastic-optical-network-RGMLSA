@@ -1,12 +1,8 @@
+import pandas as pd
+from src.classes import AdvDiGraph
 
 
-
-
-def grooom_intermediate_nodes(N,traffic_dict,k_shortestpath_dict):
-
-
-    
-
-
-
+def grooom_intermediate_nodes(
+    G: AdvDiGraph, traffic: pd.DataFrame, k_shortest_path: dict
+) -> None:
     return
