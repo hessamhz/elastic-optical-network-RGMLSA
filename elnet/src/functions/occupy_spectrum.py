@@ -1,4 +1,4 @@
-from src.classes import AdvDiGraph
+from elnet.src.classes import AdvDiGraph
 
 
 # Occupy Spectrum As Number of Slots and starting with first slot that returns from first fit function

@@ -1,5 +1,5 @@
 import pandas as pd
-from src.classes import AdvDiGraph
+from elnet.src.classes import AdvDiGraph
 
 
 def choose_MF(
@@ -7,4 +7,5 @@ def choose_MF(
     transponders: pd.DataFrame,
     traffic: pd.DataFrame,
 ) -> None:
+
     return
