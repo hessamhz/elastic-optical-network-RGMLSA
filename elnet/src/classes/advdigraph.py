@@ -1,9 +1,6 @@
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-from contextily import add_basemap
 from mpl_toolkits.basemap import Basemap as Basemap
 
 
@@ -36,6 +33,7 @@ class AdvDiGraph(nx.DiGraph):
         pos = {}
         for count, elem in enumerate(self.nodes()):
             pos[elem] = (e_x[count], e_y[count])
+
         # drawing the map using nx
         nx.draw_networkx(
             self,
