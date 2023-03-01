@@ -1,4 +1,4 @@
-from src.classes import AdvDiGraph
+from elnet.src.classes import AdvDiGraph
 
 
 def clear_spectrum(G: AdvDiGraph, num_slot=320) -> None:

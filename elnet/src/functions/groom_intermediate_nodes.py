@@ -1,5 +1,5 @@
 import pandas as pd
-from src.classes import AdvDiGraph
+from elnet.src.classes import AdvDiGraph
 
 
 def grooom_intermediate_nodes(

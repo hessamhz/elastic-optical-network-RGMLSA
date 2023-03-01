@@ -1,4 +1,4 @@
-from src.classes import AdvDiGraph
+from elnet.src.classes import AdvDiGraph
 
 
 def spectrum_first_fit(G: AdvDiGraph, path: list, num_slots: int) -> int:

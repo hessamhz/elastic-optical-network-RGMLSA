@@ -1,1 +1,1 @@
-from src.classes.advdigraph import AdvDiGraph
+from elnet.src.classes.advdigraph import AdvDiGraph

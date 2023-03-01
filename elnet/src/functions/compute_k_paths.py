@@ -1,4 +1,4 @@
-from src.classes import AdvDiGraph
+from elnet.src.classes import AdvDiGraph
 import networkx as nx
 
 
