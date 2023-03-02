@@ -4,6 +4,7 @@ from elnet.src.functions.check_SO_for_path import (
 from elnet.src.functions.choose_MF import choose_MF
 from elnet.src.functions.clear_spectrum import clear_spectrum
 from elnet.src.functions.compute_k_paths import compute_k_paths
+from elnet.src.functions.create_path_df import create_path_df
 from elnet.src.functions.groom_intermediate_nodes import (
     grooom_intermediate_nodes,
 )

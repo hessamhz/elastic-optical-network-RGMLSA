@@ -20,8 +20,9 @@ class AdvDiGraph(nx.DiGraph):
         latitude_attrs = nx.get_node_attributes(self, "latitude")
 
         # checking if values are given right
-        if len(longitude_attrs) != self.number_of_nodes() or not len(
-            latitude_attrs != self.number_of_nodes()
+        if (
+            len(longitude_attrs) != self.number_of_nodes()
+            or len(latitude_attrs) != self.number_of_nodes()
         ):
             raise ValueError("Node attributes must be set accordingly.")
         # using dictionary is more efficient that iterating over attributes

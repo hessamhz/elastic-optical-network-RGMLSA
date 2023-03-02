@@ -1,8 +1,13 @@
-from elnet.src.classes import AdvDiGraph
 import networkx as nx
 
+from elnet.src.classes import AdvDiGraph
 
-def compute_k_paths(G: AdvDiGraph, num_candidate_paths=5) -> dict:
+
+def compute_k_paths(G: AdvDiGraph, num_candidate_paths: int) -> dict:
+
+    # k = 3 is a logical default
+    if num_candidate_paths is None:
+        num_candidate_paths = 3
 
     k_paths_dict = {}
 
@@ -12,12 +17,11 @@ def compute_k_paths(G: AdvDiGraph, num_candidate_paths=5) -> dict:
         src_id,
     ) in enumerate(G.nodes()):
         for dst_ind, dst_id in enumerate(G.nodes()):
-
-            # ignore paths from node_i to node_j of i >= j
-            if src_ind >= dst_ind:
+            # Not counting nodes going back to each other
+            if src_ind == dst_ind:
                 continue
 
-            # a list of paths with a key tuple of (src_node_id, dst_node_id)
+            # A list of paths with a key tuple of (src_node_id, dst_node_id)
             k_paths_dict[(src_id, dst_id)] = []
 
             path_generator = nx.shortest_simple_paths(
@@ -26,7 +30,7 @@ def compute_k_paths(G: AdvDiGraph, num_candidate_paths=5) -> dict:
 
             for path_ind, path in enumerate(path_generator):
 
-                # stop after k paths have been saved
+                # Stop after k paths have been saved
                 if path_ind == num_candidate_paths:
                     break
 
