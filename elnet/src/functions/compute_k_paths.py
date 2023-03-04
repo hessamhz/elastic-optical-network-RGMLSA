@@ -25,7 +25,7 @@ def compute_k_paths(G: AdvDiGraph, num_candidate_paths: int) -> dict:
             k_paths_dict[(src_id, dst_id)] = []
 
             path_generator = nx.shortest_simple_paths(
-                G, src_id, dst_id, weight="length"
+                G, src_id, dst_id, weight="weight"
             )
 
             for path_ind, path in enumerate(path_generator):
@@ -35,6 +35,16 @@ def compute_k_paths(G: AdvDiGraph, num_candidate_paths: int) -> dict:
                     break
 
                 else:
-                    k_paths_dict[(src_id, dst_id)].append(path)
+                    # Getting the total sum of the path and the max weight link
+                    total_length = 0
+                    max_weight = 0
+                    for i, j in zip(path[:-1], path[1:]):
+                        link_weight = G[i][j]["weight"]
+                        total_length += link_weight
+                        if link_weight > max_weight:
+                            max_weight = link_weight
+                    k_paths_dict[(src_id, dst_id)].append(
+                        (path, total_length, max_weight)
+                    )
 
     return k_paths_dict
