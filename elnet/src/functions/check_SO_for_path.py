@@ -8,8 +8,9 @@ def check_SO_for_groooming_intermediate_nodes(
 
     length = len(route_path)
     for r in range(length - 1):
-        rcurr = route_path[r]
-        rnext = route_path[r + 1]
+        
+        rcurr = route_path[0][r]
+        rnext = route_path[0][r + 1]
         print(rcurr, rnext)
         # if not available in any of the next links, block.
         if G.edges[(rcurr, rnext)]["spectral_occupation"][n_channel] == 1:
