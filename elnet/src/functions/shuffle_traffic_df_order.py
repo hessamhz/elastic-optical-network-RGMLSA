@@ -5,7 +5,7 @@ import random
 import pandas as pd
 
 
-def shuffle_traffic_df_order(traffic:pd.DataFrame,shuffling_parameter:int):
+def shuffle_traffic_df_order(traffic:pd.DataFrame,shuffling_parameter=50)->None:
     
     shuffled_traffic_list=[]
     for i in range(shuffling_parameter):

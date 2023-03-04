@@ -16,4 +16,6 @@ def MSE_MC(G: AdvDiGraph, traffic: pd.DataFrame, k_shortest_path=3) -> None:
         traffic, k_shortest_path_df, on=["src", "dst"], how="inner"
     )
 
+    
+
     return merged_traffic
