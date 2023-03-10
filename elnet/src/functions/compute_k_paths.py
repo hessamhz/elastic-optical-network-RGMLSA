@@ -4,6 +4,9 @@ from elnet.src.classes import AdvDiGraph
 
 
 def compute_k_paths(G: AdvDiGraph, num_candidate_paths: int) -> dict:
+    """
+    Compute k_shortest_path for any given node pairs in our graph.
+    """
 
     # k = 3 is a logical default
     if num_candidate_paths is None:

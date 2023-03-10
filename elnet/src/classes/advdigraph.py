@@ -13,6 +13,27 @@ class AdvDiGraph(nx.DiGraph):
         attrs = node_attrs.set_index("node").to_dict("index")
         nx.set_node_attributes(self, attrs)
 
+    def clear_spectrum(self) -> None:
+        """
+        We are using 4THz optical band for each link and
+        We choose each slot has 12.5 GHz; so it makes 320 channels
+        This function cleans the already occupied spectrums
+        """
+        for link in self.edges:
+            self.edges[link]["spectral_occupation"] = [0] * 320
+            self.edges[link]["OEOs"] = []
+
+    def spectrum_occupation(self) -> dict:
+        """
+        Function for calculating a dictionary of SOs that are occupied
+        """
+        slots_occupied = {}
+
+        for link in self.edges:
+            slots_occupied[link] = sum(self.edges[link]["spectral_occupation"])
+
+        return slots_occupied
+
     def create_map(self) -> None:
         plt.figure(figsize=(9, 9))
         # get a dictionary of attribute values for all nodes

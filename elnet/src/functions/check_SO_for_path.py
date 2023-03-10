@@ -3,17 +3,23 @@ import pandas as pd
 
 # SO = Spectrum Occupation
 def check_SO_for_groooming_intermediate_nodes(
-    G: AdvDiGraph, traffic: pd.DataFrame, route_path: list, n_channel: int
+    G: AdvDiGraph, route_path: list, n_channel: int
 ) -> bool:
+    """
+    Checking if there is any continous n_channel in
+    all links of a given path.
+    """
 
-    length = len(route_path)
-    for r in range(length - 1):
-        
-        rcurr = route_path[0][r]
-        rnext = route_path[0][r + 1]
-        print(rcurr, rnext)
+    path_length = len(route_path)
+
+    for r in range(path_length - 1):
+        rcurr = route_path[r]
+        rnext = route_path[r + 1]
+        sum_dynamic = sum(G.edges[(rcurr, rnext)]["spectral_occupation"])
+
         # if not available in any of the next links, block.
-        if G.edges[(rcurr, rnext)]["spectral_occupation"][n_channel] == 1:
-            return False
+        for i in range(sum_dynamic, sum_dynamic + n_channel):
+            if G.edges[(rcurr, rnext)]["spectral_occupation"][i] == 1:
+                return False
 
     return True
