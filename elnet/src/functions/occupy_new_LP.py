@@ -56,8 +56,10 @@ def occupy_new_LP(
         if not is_feasible:
             continue
 
-        # The light path is feasible, we derive the capacity of modulation format
+        # The light path is feasible, we derive the capacity & reach of modulation format
         OEO_cap = MF.loc[MF_id]["data_rate"]
+        remaining_cap = OEO_cap - traffic_demand["traffic"]
+        OEO_reach = MF.loc[MF_id]["reach"]
 
         # Making the data structure of light path
         light_path = {
@@ -66,7 +68,8 @@ def occupy_new_LP(
             "OEO_on_nodes": OEO_on_nodes,
             "num_slots": total_slots,
             "OEO_capacity": OEO_cap,
-            "remaining_capacity": OEO_cap - traffic_demand["traffic"],
+            "OEO_reach": OEO_reach,
+            "remaining_capacity": [remaining_cap] * len(OEO_on_nodes),
         }
 
         # Occupy the light path
