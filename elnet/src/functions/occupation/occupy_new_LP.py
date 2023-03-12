@@ -3,9 +3,10 @@ import math
 import pandas as pd
 
 from elnet.src.classes import AdvDiGraph
-from elnet.src.functions import choose_MF, deploy_OEO
-from elnet.src.functions.occupy_spectrum import occupy_spectrum
-from elnet.src.functions.spectrum_first_fit import spectrum_first_fit
+from elnet.src.functions.MF import choose_MF
+from elnet.src.functions.occupation.deploy_OEO import deploy_OEO
+from elnet.src.functions.occupation.occupy_spectrum import occupy_spectrum
+from elnet.src.functions.utils import spectrum_first_fit
 
 
 def occupy_new_LP(
@@ -17,7 +18,7 @@ def occupy_new_LP(
     Occupy a new light path for a given demand if it is feasible
     """
     # Getting modulation level for all path of a request.
-    mod_levels = choose_MF(G, transponders_df, traffic_demand["paths"])
+    mod_levels = choose_MF(transponders_df, traffic_demand["paths"])
 
     for i in range(len(mod_levels)):
         # Used to check the feasiblity of creating the light path

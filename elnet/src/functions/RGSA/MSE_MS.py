@@ -1,9 +1,9 @@
 import pandas as pd
 
 from elnet.src.classes import AdvDiGraph
-from elnet.src.functions import compute_k_paths, create_path_df
-from elnet.src.functions.grooming_candidates import find_grooming_candidates
-from elnet.src.functions.occupy_new_LP import occupy_new_LP
+from elnet.src.functions.grooming import find_grooming_candidates
+from elnet.src.functions.occupation import occupy_new_LP
+from elnet.src.functions.utils import compute_k_paths, create_path_df
 
 
 # MSE = Most Spectral Efficient
@@ -13,7 +13,7 @@ def MSE_MS(
     traffic: pd.DataFrame,
     transponders_df: pd.DataFrame,
     k_shortest_path=3,
-) -> None:
+) -> tuple:
     """
     Algorithm w.r.t Maximum Spectrum Efficiency and Minimum Spectrum
     """

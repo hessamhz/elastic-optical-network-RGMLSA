@@ -1,13 +1,10 @@
 import pandas as pd
 
-from elnet.src.classes import AdvDiGraph
-
 
 def choose_MF(
-    G: AdvDiGraph,
     transponders: pd.DataFrame,
     traffic_tuples: list,
-) -> None:
+) -> list:
     """
     For choosing the MF we go for a greedy approach
     In this approach we just choose the OEO with the
