@@ -21,6 +21,20 @@ def MSE_MC(
     path_dict = compute_k_paths(G, k_shortest_path)
     k_shortest_path_df = create_path_df(G, path_dict)
 
+    occupied_light_paths = pd.DataFrame(
+        columns=[
+            "path",
+            "OEO_id",
+            "OEO_on_nodes",
+            "num_slots",
+            "OEO_cap_per_slot",
+            "remaining_slots",
+            "OEO_capacity",
+            "OEO_reach",
+            "remaining_capacity",
+        ]
+    )
+
     # Clearing the previously assigned spectrums for the graph
     G.clear_spectrum()
 
@@ -29,11 +43,14 @@ def MSE_MC(
     )
 
     # Trying to occupy the first demand
-    G, occupied_light_paths, is_blocked = occupy_new_LP(
-        G, merged_traffic.iloc[0], transponders_df, []
+    G, new_occupied_light_paths, is_blocked = occupy_new_LP(
+        G, merged_traffic.iloc[0], transponders_df
     )
 
-    print(occupied_light_paths[0])
+    occupied_light_paths = pd.concat(
+        [occupied_light_paths, new_occupied_light_paths], ignore_index=True
+    )
+
     # We could not make the light path for the first demand
     # this happens probably due to a bad topology
     if is_blocked:
@@ -61,29 +78,28 @@ def MSE_MC(
                 OEO_capacity = goorming_candidates[k].get("OEO_capacity")
                 if max_capacity < OEO_capacity:
                     max_capacity = OEO_capacity
-                    grooming_candidate_index = k
+                    grooming_candidate_index = goorming_candidates[k].get(
+                        "LP_id"
+                    )
 
             # Occupy the existing path
-            previous_remaining_cap = occupied_light_paths[
+            previous_remaining_cap = occupied_light_paths.iloc[
                 grooming_candidate_index
             ]["remaining_capacity"]
-            """
-            occupied_light_paths[grooming_candidate_index][
-                "remaining_capacity"
-            ] = [x - demand["traffic"] for x in previous_remaining_cap]
-            """
-            if grooming_candidate_index == 0:
-                print(
-                    "index 0 mse",
-                    occupied_light_paths[grooming_candidate_index][
-                        "remaining_capacity"
-                    ],
-                    demand["traffic"],
-                )
+
             for x in range(len(previous_remaining_cap)):
-                occupied_light_paths[grooming_candidate_index][
+                occupied_light_paths.iloc[grooming_candidate_index][
                     "remaining_capacity"
                 ][x] -= demand["traffic"]
+
+            for x in range(goorming_candidates.get("taken_slots")):
+                for y in range(
+                    goorming_candidates.get("src_index"),
+                    goorming_candidates.get("dst_index") + 1,
+                ):
+                    occupied_light_paths.iloc[grooming_candidate_index][
+                        "remaining_slots"
+                    ][y] = 1
 
             # Add the service as done and move to the next traffic
             service_status.append(1)
@@ -91,8 +107,11 @@ def MSE_MC(
 
         # Occupying a new light path if it is feasible since we could not
         # assign our demand to an existing light path
-        G, occupied_light_paths, is_blocked = occupy_new_LP(
-            G, demand, transponders_df, occupied_light_paths
+        G, new_occupied_light_paths, is_blocked = occupy_new_LP(
+            G, demand, transponders_df
+        )
+        occupied_light_paths = pd.concat(
+            [occupied_light_paths, new_occupied_light_paths], ignore_index=True
         )
 
         if is_blocked:

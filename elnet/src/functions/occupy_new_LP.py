@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 
 from elnet.src.classes import AdvDiGraph
@@ -10,7 +12,6 @@ def occupy_new_LP(
     G: AdvDiGraph,
     traffic_demand: pd.Series,
     transponders_df: pd.DataFrame,
-    occupied_light_paths: list,
 ) -> tuple:
     """
     Occupy a new light path for a given demand if it is feasible
@@ -61,23 +62,33 @@ def occupy_new_LP(
         remaining_cap = OEO_cap - traffic_demand["traffic"]
         OEO_reach = MF.loc[MF_id]["reach"]
 
+        OEO_cap_per_slot = OEO_cap / total_slots
+        taken_slots = math.ceil(traffic_demand["traffic"] / OEO_cap_per_slot)
+
         # Making the data structure of light path
-        light_path = {
-            "path": path,
-            "OEO_id": MF_id,
-            "OEO_on_nodes": OEO_on_nodes,
-            "num_slots": total_slots,
-            "OEO_capacity": OEO_cap,
-            "OEO_reach": OEO_reach,
-            "remaining_capacity": [remaining_cap] * len(OEO_on_nodes),
-        }
+        new_occupied_path = pd.DataFrame(
+            {
+                "path": [path],
+                "OEO_id": [MF_id],
+                "OEO_on_nodes": [OEO_on_nodes],
+                "num_slots": [total_slots],
+                "OEO_cap_per_slot": [OEO_cap_per_slot],
+                "remaining_slots": [
+                    [([1] * taken_slots) + ([0] * (total_slots - taken_slots))]
+                    * (len(OEO_on_nodes) - 1)
+                ],
+                "OEO_capacity": [OEO_cap],
+                "OEO_reach": [OEO_reach],
+                "remaining_capacity": [
+                    [remaining_cap] * (len(OEO_on_nodes) - 1)
+                ],
+            }
+        )
 
         # Occupy the light path
         G = occupy_spectrum(G, path, first_slot_to_occupy, total_slots, MF_id)
 
-        occupied_light_paths.append(light_path)
-
         # boolean is is_blocked
-        return G, occupied_light_paths, False
+        return G, new_occupied_path, False
 
-    return G, occupied_light_paths, True
+    return G, None, True
