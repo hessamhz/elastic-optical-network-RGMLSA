@@ -23,8 +23,8 @@ def occupy_new_LP(
         # Used to check the feasiblity of creating the light path
         is_feasible = True
 
-        # Modulation format for the given path
-        MF_id = mod_levels[i][1]
+        # Modulation format for the given path based on max_edge_weight
+        MF_id = mod_levels[i][0]
         path = traffic_demand["paths"][i][0]
 
         # Getting the modulation format row

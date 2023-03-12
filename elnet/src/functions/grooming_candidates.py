@@ -54,22 +54,23 @@ def find_grooming_candidates(
             first_fit_ceiling = -1
 
             for l in range(occupied_LP["num_slots"] - taken_slots + 1):
-                is_spectrum_available = True
                 for k in range(src_index, dst_index):
-                    OEO_flag = False
+                    is_slot_occupied = False
                     for o in range(taken_slots):
-                        if remaining_slots[k][o]:
-                            OEO_flag = True
+                        if remaining_slots[k][l + o]:
+                            # print(remaining_slots, l, o)
+                            is_slot_occupied = True
                             break
-                    if OEO_flag:
-                        is_spectrum_available = False
+                    if is_slot_occupied:
                         break
-                if is_spectrum_available:
-                    first_fit_ceilings = l
+                if not is_slot_occupied:
+                    first_fit_ceiling = l
+                    break
 
             # No continuous spectrum found in the sub-path
             if first_fit_ceiling == -1:
                 continue
+
             # We add this LP to our candiate LP to later on decide on it
             candidate_LPs.append(
                 {
@@ -77,7 +78,7 @@ def find_grooming_candidates(
                     "LP_id": j,
                     "OEO_capacity": occupied_LP["OEO_capacity"],  # MSE-MC
                     "OEO_slots": taken_slots,  # MSE-MS
-                    "first_fit_ceilings": first_fit_ceilings,
+                    "first_fit_ceiling": first_fit_ceiling,
                     "src_index": src_index,
                     "dst_index": dst_index,
                 }

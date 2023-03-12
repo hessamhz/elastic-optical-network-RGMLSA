@@ -63,25 +63,26 @@ def MSE_MS(
 
         demand = merged_traffic.loc[j]
 
-        goorming_candidates = find_grooming_candidates(
+        grooming_candidates = find_grooming_candidates(
             demand, occupied_light_paths
         )
 
         # Finding MSE-MS => Finding the minimum spectrum
-        grooming_candidates_len = len(goorming_candidates)
+        grooming_candidates_len = len(grooming_candidates)
         if grooming_candidates_len > 0:
             min_spectrum = 10000
             grooming_candidate_index = None
 
             # Finding the least spectrums (lower spacing)
             for k in range(grooming_candidates_len):
-                OEO_slots = goorming_candidates[k].get("OEO_slots")
+                OEO_slots = grooming_candidates[k].get("OEO_slots")
                 if min_spectrum > OEO_slots:
                     min_spectrum = OEO_slots
-                    grooming_candidate_index = goorming_candidates[k].get(
-                        "LP_id"
-                    )
+                    candidate_dict = grooming_candidates[k]
 
+            grooming_candidate_index = candidate_dict.get("LP_id")
+            candidate_taken_slots = candidate_dict.get("OEO_slots")
+            ceiling_slot = candidate_dict.get("first_fit_ceiling")
             # Occupy the existing path
             previous_remaining_cap = occupied_light_paths.iloc[
                 grooming_candidate_index
@@ -91,6 +92,15 @@ def MSE_MS(
                 occupied_light_paths.iloc[grooming_candidate_index][
                     "remaining_capacity"
                 ][x] -= demand["traffic"]
+
+            for x in range(candidate_taken_slots):
+                for y in range(
+                    candidate_dict.get("src_index"),
+                    candidate_dict.get("dst_index"),
+                ):
+                    occupied_light_paths.iloc[grooming_candidate_index][
+                        "remaining_slots"
+                    ][y][ceiling_slot + x] = 1
 
             # Add the service as done and move to the next traffic
             service_status.append(1)

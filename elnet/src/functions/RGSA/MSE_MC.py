@@ -63,25 +63,26 @@ def MSE_MC(
 
         demand = merged_traffic.loc[j]
 
-        goorming_candidates = find_grooming_candidates(
+        grooming_candidates = find_grooming_candidates(
             demand, occupied_light_paths
         )
 
         # Finding MSE-MC => Finding the highest capacity
-        grooming_candidates_len = len(goorming_candidates)
+        grooming_candidates_len = len(grooming_candidates)
         if grooming_candidates_len > 0:
             max_capacity = 0
             grooming_candidate_index = None
 
             # Finding the most capacity
             for k in range(grooming_candidates_len):
-                OEO_capacity = goorming_candidates[k].get("OEO_capacity")
+                OEO_capacity = grooming_candidates[k].get("OEO_capacity")
                 if max_capacity < OEO_capacity:
                     max_capacity = OEO_capacity
-                    grooming_candidate_index = goorming_candidates[k].get(
-                        "LP_id"
-                    )
+                    candidate_dict = grooming_candidates[k]
 
+            grooming_candidate_index = candidate_dict.get("LP_id")
+            candidate_taken_slots = candidate_dict.get("OEO_slots")
+            ceiling_slot = candidate_dict.get("first_fit_ceiling")
             # Occupy the existing path
             previous_remaining_cap = occupied_light_paths.iloc[
                 grooming_candidate_index
@@ -92,14 +93,14 @@ def MSE_MC(
                     "remaining_capacity"
                 ][x] -= demand["traffic"]
 
-            for x in range(goorming_candidates.get("taken_slots")):
+            for x in range(candidate_taken_slots):
                 for y in range(
-                    goorming_candidates.get("src_index"),
-                    goorming_candidates.get("dst_index") + 1,
+                    candidate_dict.get("src_index"),
+                    candidate_dict.get("dst_index"),
                 ):
                     occupied_light_paths.iloc[grooming_candidate_index][
                         "remaining_slots"
-                    ][y] = 1
+                    ][y][ceiling_slot + x] = 1
 
             # Add the service as done and move to the next traffic
             service_status.append(1)
