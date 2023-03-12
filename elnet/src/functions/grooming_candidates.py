@@ -12,8 +12,6 @@ def find_grooming_candidates(
     """
     candidate_LPs = []
     for i in range(len(traffic_demand["paths"])):
-        # Used to check the feasiblity of creating the light path
-        is_feasible = True
 
         # Iterating over the candidate paths
         path = traffic_demand["paths"][i][0]
@@ -77,7 +75,8 @@ def find_grooming_candidates(
                     "path_id": i,
                     "LP_id": j,
                     "OEO_capacity": occupied_LP["OEO_capacity"],  # MSE-MC
-                    "OEO_slots": taken_slots,  # MSE-MS
+                    "OEO_slots": occupied_LP["num_slots"],  # MSE-MS
+                    "taken_slots": taken_slots,
                     "first_fit_ceiling": first_fit_ceiling,
                     "src_index": src_index,
                     "dst_index": dst_index,

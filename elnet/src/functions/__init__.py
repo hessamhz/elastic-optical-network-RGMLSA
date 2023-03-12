@@ -1,4 +1,4 @@
-from elnet.src.functions.calculate_cost import calculate_cost
+from elnet.src.functions.benchmarking import *
 from elnet.src.functions.check_SO_for_path import (
     check_SO_for_groooming_intermediate_nodes,
 )

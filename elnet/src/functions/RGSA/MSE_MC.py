@@ -81,7 +81,7 @@ def MSE_MC(
                     candidate_dict = grooming_candidates[k]
 
             grooming_candidate_index = candidate_dict.get("LP_id")
-            candidate_taken_slots = candidate_dict.get("OEO_slots")
+            candidate_taken_slots = candidate_dict.get("taken_slots")
             ceiling_slot = candidate_dict.get("first_fit_ceiling")
             # Occupy the existing path
             previous_remaining_cap = occupied_light_paths.iloc[
@@ -121,4 +121,5 @@ def MSE_MC(
         else:
             service_status.append(1)
 
-    return occupied_light_paths, service_status
+    spectrum_occupation = G.spectrum_occupation()
+    return (occupied_light_paths, service_status, spectrum_occupation)
