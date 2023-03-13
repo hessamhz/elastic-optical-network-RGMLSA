@@ -20,7 +20,7 @@ from elnet.tests.utils import eu_graph
 
 G = eu_graph()
 G.create_map()
-it_node_p = "elnet/data/national/europe-nodes.csv"
+it_node_p = "elnet/data/continental/europe-nodes.csv"
 it_node = pd.read_csv(it_node_p)
 # services = pd.read_csv("elnet/data/tests/sample-traffics.csv")
 transponders = pd.read_csv("elnet/data/params/transponders.csv")
