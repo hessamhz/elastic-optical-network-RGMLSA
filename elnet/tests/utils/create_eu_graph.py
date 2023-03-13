@@ -37,6 +37,6 @@ def eu_graph():
         projection="merc",
     )
     G.basemap = m
-    G.add_node_attrs_from_panda(df_eu_edges)
+    G.add_node_attrs_from_panda(df_eu_nodes)
 
     return G
