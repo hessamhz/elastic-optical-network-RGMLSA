@@ -14,6 +14,7 @@ def JEC(
     G: AdvDiGraph,
     traffic_df: pd.DataFrame,
     transponders_df: pd.DataFrame,
+    occupied_light_paths: pd.DataFrame,
     k_shortest_path=3,
 ) -> tuple:
     """
@@ -23,6 +24,8 @@ def JEC(
     aggregated_traffic = node_pair_traffic_aggregator(G, traffic_df)
 
     service_status = []
+
+    """
     occupied_light_paths = pd.DataFrame(
         columns=[
             "path",
@@ -36,10 +39,10 @@ def JEC(
             "remaining_capacity",
         ]
     )
+    """
 
-    G.clear_spectrum()
+    # G.clear_spectrum()
 
-    # print("sik", aggregated_traffic.iloc[0])
     for index, demand in aggregated_traffic.iterrows():
         # Most spectral efficient MF for aggregated traffic
         MF = choose_MF_for_JEC(transponders_df, demand)
@@ -88,5 +91,4 @@ def JEC(
         # adding the number of services served
         service_status.append(services_served)
 
-    spectrum_occupation = G.spectrum_occupation()
-    return (occupied_light_paths, service_status, spectrum_occupation)
+    return (occupied_light_paths, service_status, G)

@@ -12,6 +12,8 @@ def MSE_MC(
     G: AdvDiGraph,
     traffic: pd.DataFrame,
     transponders_df: pd.DataFrame,
+    occupied_light_paths: pd.DataFrame,
+    sequence_num: int,
     k_shortest_path=3,
 ) -> tuple:
     """
@@ -21,6 +23,7 @@ def MSE_MC(
     path_dict = compute_k_paths(G, k_shortest_path)
     k_shortest_path_df = create_path_df(G, path_dict)
 
+    """
     occupied_light_paths = pd.DataFrame(
         columns=[
             "path",
@@ -34,32 +37,38 @@ def MSE_MC(
             "remaining_capacity",
         ]
     )
+    """
 
     # Clearing the previously assigned spectrums for the graph
-    G.clear_spectrum()
+    # G.clear_spectrum()
 
     merged_traffic = pd.merge(
         traffic, k_shortest_path_df, on=["src", "dst"], how="inner"
     )
 
-    # Trying to occupy the first demand
-    G, new_occupied_light_paths, is_blocked = occupy_new_LP(
-        G, merged_traffic.iloc[0], transponders_df
-    )
+    # Trying to occupy the first demand if the sequence num is 0
+    if not sequence_num:
+        G, new_occupied_light_paths, is_blocked = occupy_new_LP(
+            G, merged_traffic.iloc[0], transponders_df
+        )
 
-    occupied_light_paths = pd.concat(
-        [occupied_light_paths, new_occupied_light_paths], ignore_index=True
-    )
+        occupied_light_paths = pd.concat(
+            [occupied_light_paths, new_occupied_light_paths], ignore_index=True
+        )
 
-    # We could not make the light path for the first demand
-    # this happens probably due to a bad topology
-    if is_blocked:
-        return None
+        is_first = 1
+        # We could not make the light path for the first demand
+        # this happens probably due to a bad topology
+        if is_blocked:
+            return None
 
-    # Auditing the status of each demand
-    service_status = [1]
-
-    for j in range(1, len(merged_traffic)):
+        # Auditing the status of each demand
+        service_status = [1]
+    else:
+        service_status = []
+        is_first = 0
+        
+    for j in range(is_first, len(merged_traffic)):
 
         demand = merged_traffic.loc[j]
 
@@ -121,5 +130,4 @@ def MSE_MC(
         else:
             service_status.append(1)
 
-    spectrum_occupation = G.spectrum_occupation()
-    return (occupied_light_paths, service_status, spectrum_occupation)
+    return (occupied_light_paths, service_status, G)
