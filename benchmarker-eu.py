@@ -225,6 +225,7 @@ for i in range(20):
                 {
                     "traffic_id": [i],
                     "shuffle_id": [j],
+                    "type": ["JEC"],
                     "total_traffic": [merged_slices["traffic"].sum()],
                     "total_LP": [len(occupied_light_paths)],
                     "cost": [calculate_cost(occupied_light_paths)],
